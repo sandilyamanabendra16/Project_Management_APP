@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
-    res.header('Authorization', token).json({ token });
+    res.header('Authorization', token).json("User Registered Successfully");
   } catch (err) {
     console.error('Error in registerUser:', err.message); // Log the error message
     res.status(500).json({ message: 'Server error' });
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
-    res.status(200).json({ token });
+    res.status(200).json({ user, token });
   } catch (err) {
     console.error('Error in loginUser:', err.message); // Log the error message
     res.status(500).json({ message: 'Server error' });

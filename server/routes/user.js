@@ -7,6 +7,6 @@ router.get(`/:id`,authMiddleware, GetUser );
 
 router.put('/:id', authMiddleware,UpdateUser );
 
-router.put('/add/:id', addPeople )
+router.post('/add/:id', authMiddleware, addPeople )
 
 module.exports = router;

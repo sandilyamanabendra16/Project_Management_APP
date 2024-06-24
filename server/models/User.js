@@ -16,7 +16,10 @@ const userSchema= new Schema(
             type: String,
             required: true,
         },
-        peopleAdded:[],
+        peopleAdded: {
+            type: [String],  // Array of strings (emails or IDs)
+            default: [],     // Default empty array
+        },
       },
       {timestamps:true}
 )

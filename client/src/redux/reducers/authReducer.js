@@ -1,5 +1,5 @@
 const initialState = {
-    authData: JSON.parse(localStorage.getItem('profile1')) || null,
+    authData: null,
     loading: false,
     error: false,
     isAuthenticated: false,
@@ -20,12 +20,12 @@ const initialState = {
       case 'FETCHED_USER':
         return { ...state, authData: action.payload, loading: false, error: false, isAuthenticated: true };
       case 'FETCH_FAILURE':
-        localStorage.removeItem('profile');
+        localStorage.removeItem('profile1');
         return { ...state, loading: false, error: true, isAuthenticated: false };
       case 'UPDATE_START':
         return { ...state, updateLoading: true, error: false };
       case 'UPDATE_SUCCESS':
-        localStorage.setItem('profile', JSON.stringify({ ...action.payload }));
+        localStorage.setItem('profile1', JSON.stringify({ ...action.payload }));
         return { ...state, authData: action.payload, updateLoading: false, error: false };
       case 'UPDATE_FAIL':
         return { ...state, updateLoading: false, error: true };
