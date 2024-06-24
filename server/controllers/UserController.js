@@ -37,5 +37,21 @@ const UpdateUser= async (req, res) => {
     res.status(500).send({ error: err.message });
   }
 }
-
-module.exports={GetUser, UpdateUser}
+const addPeople= async(req, res)=>{
+    const {id}=req.params;
+    const {people}= req.body;
+    try{
+      const user = await User.findById(id);
+    if (user.peopleAdded.includes(people)) {
+      return res.status(400).json({ message: 'Person is already shared with this user' });
+    }
+    console.log(user);
+    user.peopleAdded.push(people);
+    await user.save();
+    res.status(200).json(user);
+  }catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+    
+}
+module.exports={GetUser, UpdateUser, addPeople}

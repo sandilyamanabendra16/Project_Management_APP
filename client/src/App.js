@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { getUser } from './redux/actions/userActions';
+import { initializeAuth } from './redux/actions/authActions';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -19,6 +20,9 @@ const App = () => {
 
   // useEffect(() => {
   //   dispatch(getUser(user._id));
+  // }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(initializeAuth());
   // }, [dispatch]);
 
   return (

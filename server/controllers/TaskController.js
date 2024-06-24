@@ -1,10 +1,17 @@
 const Task = require('../models/Task');
+const User = require('../models/User');
 
 // Get all tasks with optional filter
 const getTasks = async (req, res) => {
   const { filter } = req.query;
+  const userId = req.user._id;
+  let query = { 
+    $or: [
+      { user: userId },
+      { sharedWith: userId }
+    ]
+  };
 
-  let query = { user: req.user._id };
   const now = new Date();
 
   if (filter === 'today') {
@@ -31,17 +38,17 @@ const getTasks = async (req, res) => {
 
 // Create a new task
 const createTask = async (req, res) => {
-  const { title, description, priority, dueDate, status, sharedWith } = req.body;
+  const { title, priority, dueDate, status, sharedWith, checklist } = req.body;
 
   try {
     const task = new Task({
       title,
-      description,
       priority,
       dueDate,
       status,
       user: req.user._id,
-      sharedWith
+      sharedWith,
+      checklist,
     });
     await task.save();
     res.json(task);
@@ -53,7 +60,7 @@ const createTask = async (req, res) => {
 // Update a task
 const updateTask = async (req, res) => {
   const { id } = req.params;
-  const { title, priority,description, dueDate, status, sharedWith } = req.body;
+  const { title, priority, dueDate, status, sharedWith, checklist } = req.body;
 
   try {
     const task = await Task.findById(id);
@@ -65,10 +72,10 @@ const updateTask = async (req, res) => {
 
     task.title = title || task.title;
     task.priority = priority || task.priority;
-    task.description= description || task.description;
     task.dueDate = dueDate || task.dueDate;
     task.status = status || task.status;
     task.sharedWith = sharedWith || task.sharedWith;
+    task.checklist = checklist || task.checklist;
 
     await task.save();
     res.json(task);
@@ -93,4 +100,39 @@ const deleteTask = async (req, res) => {
     }
   };
 
-module.exports = { getTasks, createTask, updateTask, deleteTask };
+  // Share a task
+const shareTask = async (req, res) => {
+  const { email } = req.body;
+  const { id } = req.params;
+
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the task by id
+    const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // Check if the task is already shared with this user
+    if (task.sharedWith.includes(user._id)) {
+      return res.status(400).json({ message: 'Task is already shared with this user' });
+    }
+
+    // Add the user to the sharedWith array
+    task.sharedWith.push(user._id);
+    await task.save();
+
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+module.exports = { getTasks, createTask, updateTask, deleteTask, shareTask };
