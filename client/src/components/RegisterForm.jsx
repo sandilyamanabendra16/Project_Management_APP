@@ -1,49 +1,102 @@
 import React, { useState , useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../redux/actions/authActions';
+import { resetUserAlreadyExists, signUp } from '../redux/actions/authActions';
 import { Navigate, useNavigate } from 'react-router-dom';
+import styles from "./RegisterForm.module.css";
+import { CiMail } from "react-icons/ci";
+import { AiFillLock } from "react-icons/ai";
+import { LuEye } from "react-icons/lu";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    cpassword: '',
   });
   const auth = useSelector(state => state.auth);
-  const navigate = useNavigate();
-  
+
+  console.log(auth);
   useEffect(() => {
-    if (!auth.isAuthenticated) {
+    if (auth.isAuthenticated) {
       return <Navigate to="/login" />;
     }
   }, [])
-  const { name, email, password } = formData;
+
+  console.log(auth.userAlreadyExists);
+  const { name, email, password , cpassword } = formData;
 
   const dispatch = useDispatch();
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+
+  useEffect(() => {
+    if (auth.userAlreadyExists) {
+      alert('Person Already Exists');
+      dispatch(resetUserAlreadyExists());
+    }
+  }, [auth.userAlreadyExists, dispatch]);
+  
+
   const onSubmit = e => {
     e.preventDefault();
-    dispatch(signUp(formData));
+    if(!name || !email || !password){
+      alert('Fill All fields');
+    }
+    else{
+    if(password===cpassword){
+        dispatch(signUp(formData));
+      }
+    else{
+      alert("Password and Confirm Password doesn't match");
+    }
+  }
   };
 
   return (
+    <div className={styles.main}>
+      <h1> Register</h1>
     <form onSubmit={onSubmit}>
-      <div>
-        <label>Name</label>
-        <input type="text" name="name" value={name} onChange={onChange} required />
+      <div className={styles.email}>
+        <input type="text" 
+        name="name" value={name} 
+        onChange={onChange} 
+        placeholder='Name' />
       </div>
-      <div>
-        <label>Email</label>
-        <input type="email" name="email" value={email} onChange={onChange} required />
+      <div className={styles.email}>
+      <CiMail />
+        <input type="email" 
+        name="email" 
+        value={email} 
+        onChange={onChange} 
+        placeholder='Email' />
       </div>
-      <div>
-        <label>Password</label>
-        <input type="password" name="password" value={password} onChange={onChange} required />
+      <div className={styles.email}> 
+      <AiFillLock color='gray'/>
+        <input type="password" 
+        name="password" value={password} 
+        onChange={onChange} 
+        placeholder='Password' />
+      <LuEye color='gray'/>
       </div>
-      <button type="submit">Register</button>
+      <div className={styles.email}>
+      <AiFillLock color='gray'/>
+        <input type="password" 
+        name="cpassword" 
+        value={cpassword} 
+        onChange={onChange} 
+        placeholder='Confirm Password' />
+      <LuEye color='gray'/>
+      </div>
+      <button type="submit" className={styles.button}>Register</button>
     </form>
+    <div className={styles.reg}>
+        <div> Have an account?</div>
+        <button onClick={()=>navigate('/login')}> Log in</button>
+    </div>
+    </div>
   );
 };
 

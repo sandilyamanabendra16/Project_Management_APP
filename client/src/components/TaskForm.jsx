@@ -6,7 +6,8 @@ const TaskForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     priority: 'low',
-    dueDate: ''
+    dueDate: '',
+    sharedWidth: [],
   });
   const [checklist, setChecklist] = useState([]);
   const [checklistItem, setChecklistItem] = useState('');

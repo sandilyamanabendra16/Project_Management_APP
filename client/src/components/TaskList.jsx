@@ -5,12 +5,12 @@ import { fetchTasks } from '../redux/actions/taskActions';
 
 const TaskList = () => {
   const dispatch = useDispatch();
-  const {tasks, loading, error}= useSelector(state => state.taskReducer);
-//   const { tasks, loading, error } = taskState || { tasks: [], loading: false, error: null };
+  const taskState = useSelector(state => state.taskReducer);
+  const { tasks, loading, error } = taskState;
 
   useEffect(() => {
     dispatch(fetchTasks());
-    console.log(tasks);
+    console.log(taskState);
   }, [dispatch]);
 
   if (loading) return <p>Loading...</p>;
@@ -18,8 +18,8 @@ const TaskList = () => {
 
   return (
     <div>
-      {tasks.length === 0 ? (
-        <p>No tasks available</p>
+      {!tasks ||tasks.length === 0 ? (
+        null
       ) : (
         <ul>
           {tasks.map(task => (

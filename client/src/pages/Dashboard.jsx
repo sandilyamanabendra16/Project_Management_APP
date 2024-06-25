@@ -5,6 +5,7 @@ import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import { fetchTasks } from '../redux/actions/taskActions';
 import { addPeople } from '../redux/actions/userActions';
+import { logout } from '../redux/actions/authActions';
 
 
 const Dashboard = () => {
@@ -12,9 +13,9 @@ const Dashboard = () => {
   const authState = useSelector(state => state.auth);
   const [people, setPeople] = useState('');
 
-  useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchTasks());
+  // }, [dispatch]);
 
   if (!authState.isAuthenticated) {
     return <Navigate to="/login" />;
@@ -45,6 +46,9 @@ const Dashboard = () => {
       </form>
       <TaskForm />
       <TaskList />
+      <div> 
+        <button onClick={()=>dispatch(logout())}> Log out</button>
+      </div>
     </div>
   );
 };
