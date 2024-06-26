@@ -1,0 +1,183 @@
+.title{
+    display: flex;
+    flex-direction: column;
+}
+.submit{
+    margin: 7%;
+}
+.title span, .priority span{
+    color: red;
+    margin-right: 10px;
+}
+
+.title input{
+    margin-top: 10px;
+    margin-bottom: 15px ;
+    padding: 10px;
+    border-radius: 5px;
+    border-color:#9B959F;
+    border-width: 1px;
+}
+.priority{
+    display: flex;
+    margin-bottom: 3%;
+}
+.priority button{
+    all:unset;
+    border-radius: 7px;
+    font-size: .7rem;
+    padding: 5px;
+
+}
+
+.highPriorityCircle{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #FF2473;
+  }
+  
+  .mediumPriorityCircle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #18B0FF; 
+    margin-right: 5px; 
+  }
+  
+  .lowPriorityCircle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #63C05B; 
+    margin-right: 5px; 
+  }
+  
+  .prioritybutton{
+    display: flex;
+  }
+
+  .prioritybutton>div{
+    border: solid;
+    border-color: #EEECEC;
+    border-width: 2px;
+    border-radius: 5px;
+    margin-left: 10px ;
+    display: flex;
+    align-items: center;
+  }
+  
+  .assign{
+    display: flex;
+    align-items: center;
+  }
+  .assign input{
+    margin: 10px 0 15px 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border-color:#9B959F;
+    border-width: 1px;
+    width: 78%;
+}
+
+.checklist span{
+    color:red;
+}
+
+.checklist{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.checklist ul {
+    list-style-type: none;
+    list-style: none;
+    padding-left: 0;
+    overflow-y: scroll;
+    height: 120px;
+
+  }
+  
+  .checklist li {
+    list-style-type: none;
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    border: solid;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border-color:rgba(191, 185, 185, 0.943) ;
+    padding:7px;
+    font-size: 12px;
+}
+.checklist li input:nth-of-type(2){
+    all:unset;
+    height:inherit;
+    width: 100%;
+    padding-left:10px; 
+}
+
+.checklist li button{
+    all:unset;
+}
+.checklist li button:hover{
+    cursor: pointer;
+}
+
+.button2{
+    all: unset;
+    color: #767575;
+    margin-bottom: 10px;
+    position: sticky;
+    bottom: -3%;
+}
+
+.button2:hover{
+    cursor: pointer;
+}
+
+.button3{
+    position: relative;
+    display: flex;
+    bottom:0px;
+    justify-content: space-between;
+}
+.datep{
+    all:unset;
+    border-color: #9B959F;
+    border: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    width: 150px;
+    height:35px;
+    font-size: 14px;
+    padding-left: 25px;
+}
+.btn1{
+    width: 130px;
+    height: 35px;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #17A2B8;
+    border: none;
+    color: white;
+    margin-bottom: 2%;
+    margin-left: 10px;
+}
+.btn2{
+    width: 130px;
+    height: 35px;
+    border-radius: 10px;
+    padding: 5px;
+    background-color:white;
+    border-color: red;
+    border-width: 1px;
+    color: red;
+}
+
+.buttons{
+    display: flex;
+}

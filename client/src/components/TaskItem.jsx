@@ -7,6 +7,7 @@ import TaskEdit from "./TaskEdit";
 const TaskItem = ({ task }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
+  const[deleteuser, setDeleteuser]=useState(false);
   const [formData, setFormData] = useState({
     title: task.title,
     description: task.description,
@@ -73,6 +74,11 @@ const TaskItem = ({ task }) => {
   const handleEdit =()=>{
     setIsEditing(true); 
     setIsOpen(false)}
+
+  const DeletePopUp=()=>{
+    setDeleteuser(false);
+    setIsOpen(false);
+  }
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -88,7 +94,7 @@ const TaskItem = ({ task }) => {
       {isOpen && (
         <div className={styles.dropdownMenu}>
           <button onClick={handleEdit} className={styles.dropdownItem}>Edit</button>
-          <button onClick={onDelete} className={styles.dropdownItem}>Delete</button>
+          <button onClick={()=>setDeleteuser(true)} className={styles.dropdownItem}>Delete</button>
           <button className={styles.dropdownItem}>Share</button>
         </div>
       )}
@@ -130,6 +136,14 @@ const TaskItem = ({ task }) => {
           <TaskEdit task={task} setIsEditing={setIsEditing}/>
         )}
       </div>
+      {deleteuser && 
+      <div className={styles.overlay}>
+        <div className={styles.user}>
+          <h4> Are you sure you want to Delete</h4>
+              <button type="submit" onClick={onDelete} className={styles.btn2}>Yes, Delete</button>
+              <button type="button" onClick={DeletePopUp} className={styles.btn1}>Cancel</button>
+        </div>
+    </div>}
       </div>
   );
 };
