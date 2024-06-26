@@ -1,0 +1,135 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100%;
+    width: 100%;
+    gap:20px;
+    }
+    
+.header { 
+    grid-area: 1 / 1 / 2 / 9;
+display: flex;
+justify-content: space-between;
+
+ }
+.backlog { 
+    grid-area: 2 / 1 / 6 / 3;
+    background-color: #EEF2F5;
+    border-radius: 10px;
+ }
+
+ .todo { 
+    grid-area: 2 / 3 / 6 / 5;
+    background-color: #EEF2F5;
+    border-radius: 10px;
+ }
+
+.inprogress { 
+    grid-area: 2 / 5 / 6 / 7; 
+    background-color:#EEF2F5;
+    border-radius: 10px;
+}
+
+.Done { 
+    grid-area: 2 / 7 / 6 / 9;
+    background-color:#EEF2F5;
+    border-radius: 10px;
+}
+
+.parent h3{
+    font-weight: 500;
+    margin-top: -1%;
+}
+
+.taskhead{
+    display: flex;
+    justify-content: space-between;
+    padding: 5%;
+}
+.taskhead span{
+    font-size: 25px;
+    margin:10px;
+}
+.taskhead span:hover{
+    cursor: pointer;
+}
+.user{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    height:200px;
+    width: 500px;
+    background-color: white;
+    border-radius: 5%;
+}
+.header1 div h1{
+    font-weight: 500;
+    margin-right: 2%;
+}
+.header1{
+    margin-left: 2%;
+}
+.header1 div{
+    display: flex;
+    align-items: center;
+}
+.header1 div span {
+    color: gray;
+    margin-left: 5%;
+}
+
+.header h2{
+    font-weight: 500;
+}
+
+.header2 select{
+    border: transparent;
+    background-color: transparent;
+    margin-top: 38%;
+    height: 20px;
+}
+.header2{
+    margin-right: 5%;
+    margin-top: 2%;
+    display: flex;
+    justify-content: flex-end;
+    align-items:stretch;
+}
+
+.header2 h2{
+    margin-right: -35%;
+}
+.taskform{
+position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    height:500px;
+    width: 600px;
+    background-color: white;
+    border-radius: 5%;
+}
+
+.overlay{
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100vh;
+    width: 100vw;
+    background-color:rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.task1{
+    background-color: white;
+    height: inherit;
+    align-self: center;
+    margin: 15px;
+    border-radius: 20px;
+}

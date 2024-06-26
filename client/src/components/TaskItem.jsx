@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, updateTask } from '../redux/actions/taskActions';
+import styles from "./TaskItem.module.css";
+import TaskEdit from "./TaskEdit";
 
 const TaskItem = ({ task }) => {
   const dispatch = useDispatch();
@@ -24,120 +26,111 @@ const TaskItem = ({ task }) => {
     dispatch(updateTask(id, { ...task, status }));
   };
 
-  const handleEditChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleChecklistChange = (index, value) => {
-    const newChecklist = [...formData.checklist];
-    newChecklist[index].text = value;
-    setFormData({ ...formData, checklist: newChecklist });
-  };
-
   const toggleChecklistItemCompletion = (index) => {
     const newChecklist = [...formData.checklist];
     newChecklist[index].completed = !newChecklist[index].completed;
     setFormData({ ...formData, checklist: newChecklist });
   };
 
-  const addChecklistItem = () => {
-    setFormData({ ...formData, checklist: [...formData.checklist, { text: '', completed: false }] });
-  };
-  const removeChecklistItem = index => {
-    setFormData({...formData, checklist: [...formData.checklist.filter((_, i) => i !== index)]});
-  };
-  const handleUpdateTask = () => {
-    dispatch(updateTask(id, formData));
-    setIsEditing(false);
-  };
 
-  const toggleEditForm = () => {
-    setIsEditing(!isEditing);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const handleButtonClick = () => {
+    setIsOpen(!isOpen);
   };
-
+  const completedChecklistItems = task.checklist ? task.checklist.filter(item => item.completed).length : 0;
+  const totalChecklistItems = task.checklist ? task.checklist.length : 0;
+  const getDateClass = () => {
+    if (!task.dueDate) {
+      return styles.dateNoDue;
+    }
+    const dueDate = new Date(task.dueDate);
+    const today = new Date();
+    if (task.status === 'done') {
+      return styles.dateDone;
+    } else if (dueDate < today) {
+      return styles.dateOverdue;
+    } else {
+      return styles.dateNormal;
+    }
+  };
+  const formatChecklistText = (text) => {
+    const parts = text.split(/\d+\)\s*/);
+    return parts.filter(part => part.trim() !== '').join(', ');
+  };
+  const priorityCircleClass = () => {
+    switch (task.priority) {
+      case 'high':
+        return styles.highPriorityCircle;
+      case 'medium':
+        return styles.mediumPriorityCircle;
+      case 'low':
+        return styles.lowPriorityCircle;
+      default:
+        return styles.defaultPriorityCircle;
+    }
+  };
+  const handleEdit =()=>{
+    setIsEditing(true); 
+    setIsOpen(false)}
   return (
-    <li>
+    <div className={styles.main}>
+      <div className={styles.header}>
+        <div className={styles.header2}>
+          <span className={priorityCircleClass()}></span>
+      <span >{task.priority.toUpperCase()} PRIORITY</span>
+        </div>
+        
+      <div className={styles.dropdown} ref={dropdownRef}>
+      <button onClick={handleButtonClick} className={styles.dotButton}>
+        ...
+      </button>
+      {isOpen && (
+        <div className={styles.dropdownMenu}>
+          <button onClick={handleEdit} className={styles.dropdownItem}>Edit</button>
+          <button onClick={onDelete} className={styles.dropdownItem}>Delete</button>
+          <button className={styles.dropdownItem}>Share</button>
+        </div>
+      )}
+      </div>
+    </div>
       <h3>{task.title}</h3>
-      <p>{task.description}</p>
-      <p>{task.priority}</p>
-      <p>{task.status}</p>
-      <p>{new Date(task.dueDate).toLocaleDateString()}</p>
-      
+      <p>Checklist({completedChecklistItems}/{totalChecklistItems})</p>
       <ul>
-        {task.checklist && task.checklist.map((item, index) => (
+      {task.checklist && task.checklist.map((item, index) => (
           <li key={index}>
-            <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
-              {item.text}
-            </span>
             <input
               type="checkbox"
               checked={item.completed}
               onChange={() => toggleChecklistItemCompletion(index)}
             />
+            <span>
+              {formatChecklistText(item.text)}
+            </span>
           </li>
         ))}
       </ul>
       
-      <button onClick={() => onUpdateStatus('todo')}>To Do</button>
-      <button onClick={() => onUpdateStatus('in-progress')}>In Progress</button>
-      <button onClick={() => onUpdateStatus('done')}>Done</button>
-      <button onClick={onDelete}>Delete</button>
-      
+      <div className={styles.taskbtns}>
+        <div className={getDateClass()}>
+        {task.dueDate && new Date(task.dueDate).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long'
+      })}
+        </div>
+        <div >
+          {task.status !== 'todo' && <button onClick={() => onUpdateStatus('todo')} className={styles.taskbtns1}>To Do</button>}
+          {task.status !== 'in-progress' && <button onClick={() => onUpdateStatus('in-progress')} className={styles.taskbtns1}>PROGRESS</button>}
+          {task.status !== 'done' && <button onClick={() => onUpdateStatus('done')} className={styles.taskbtns1}>DONE</button>}
+          {task.status !== 'backlog' && <button onClick={() => onUpdateStatus('backlog')} className={styles.taskbtns1}>BACKLOG</button>}
+        </div>
+      </div>
       <div>
-        <button onClick={toggleEditForm}>Edit Task</button>
         {isEditing && (
-          <div>
-            <input 
-              type="text" 
-              name="title" 
-              value={formData.title} 
-              onChange={handleEditChange} 
-              placeholder="Title" 
-            />
-            <select 
-              name="priority" 
-              value={formData.priority} 
-              onChange={handleEditChange}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-            <input 
-              type="date" 
-              name="dueDate" 
-              value={formData.dueDate} 
-              onChange={handleEditChange} 
-            />
-            <ul>
-              {formData.checklist.map((item, index) => (
-                <li key={index}>
-                  <input 
-                    type="text" 
-                    value={item.text} 
-                    onChange={(e) => handleChecklistChange(index, e.target.value)} 
-                    placeholder={`Checklist item ${index + 1}`} 
-                  />
-                  <button type="button" onClick={() => removeChecklistItem(index)}>
-                    Remove
-                  </button>
-                  <input
-                    type="checkbox"
-                    checked={item.completed}
-                    onChange={() => toggleChecklistItemCompletion(index)}
-                  />
-                </li>
-              ))}
-            </ul>
-            <button type="button" onClick={addChecklistItem}>
-              Add Checklist Item
-            </button>
-            
-            <button onClick={handleUpdateTask}>Update Task</button>
-          </div>
+          <TaskEdit task={task} setIsEditing={setIsEditing}/>
         )}
       </div>
-    </li>
+      </div>
   );
 };
 

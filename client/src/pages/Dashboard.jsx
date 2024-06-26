@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import { fetchTasks } from '../redux/actions/taskActions';
 import { addPeople } from '../redux/actions/userActions';
 import { logout } from '../redux/actions/authActions';
-
+import { CiSettings } from "react-icons/ci";
+import { GoDatabase } from "react-icons/go";
+import { FiLayout } from "react-icons/fi";
+import { FiCodesandbox } from "react-icons/fi";
+import { IoIosLogOut } from "react-icons/io";
+import styles from "./Dashboard.module.css"
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const authState = useSelector(state => state.auth);
-  const [people, setPeople] = useState('');
+  const [addemail, setAdduseremail]= useState(false);
+  // const [people, setPeople] = useState('');
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   dispatch(fetchTasks());
@@ -21,35 +28,61 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
 
-  const handleChange = (e) => {
-    setPeople(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   setPeople(e.target.value);
+  // };
 
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const id = authState.authData?.user?._id;
-    if (id) {
-      dispatch(addPeople(id, people));
-    } else {
-      console.error('User ID is null');
-    }
-  };
+  // console.log(authState.user);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const id = authState.authData?.user?._id;
+  //   if (id) {
+  //     dispatch(addPeople(id, people));
+  //   } else {
+  //     console.error('User ID is null');
+  //   }
+  // };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <form onSubmit={handleSubmit}>
+
+    <div className={styles.parent}>
+      <div className={styles.div1}>
+      <div>
+      <div>
+        <h3>  <FiCodesandbox /> Pro Manage</h3>
+      </div>
+          <div> <FiLayout /> Board</div>
+          <div> <GoDatabase /> Anlytics</div>
+          <div onClick={()=>navigate("/settings")} >
+            <CiSettings /> Settings
+          </div>
+      </div>
+      
+      
+      <div className={styles.logout} onClick={() => setAdduseremail(true)}>
+        <IoIosLogOut color='red'/> 
+        <span>Log out</span>
+      </div>
+      </div>
+      <div className={styles.div2}>
+      {/* <form onSubmit={handleSubmit}>
         <input type="email" value={people} onChange={handleChange} />
         <button type="submit">Add People</button>
-        {/* {userState.duplicateError && <p style={{ color: 'red' }}>Person is already shared with this user</p>}  // Display error message */}
-      </form>
-      <TaskForm />
+      </form> */}
+      {/* <TaskForm /> */}
       <TaskList />
-      <div> 
-        <button onClick={()=>dispatch(logout())}> Log out</button>
       </div>
+      {addemail && 
+      <div className={styles.overlay}>
+        <div className={styles.user}>
+          <h4> Are you sure you want to Logout</h4>
+              <button type="submit" onClick={()=>dispatch(logout())} className={styles.btn2}>Yes Logout</button>
+              <button type="button" onClick={() => setAdduseremail(false)} className={styles.btn1}>Cancel</button>
+        </div>
     </div>
+      }
+      
+  </div>
   );
 };
 

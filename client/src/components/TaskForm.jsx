@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createTask } from '../redux/actions/taskActions';
 
-const TaskForm = () => {
+const TaskForm = ({setAddtasks}) => {
   const [formData, setFormData] = useState({
     title: '',
     priority: 'low',
@@ -86,7 +86,8 @@ const TaskForm = () => {
           </div>
         ))}
       </div>
-      <button type="submit">Add Task</button>
+      <button onClick={()=>setAddtasks(false)}> Cancel</button>
+      <button type="submit">Save</button>
     </form>
   );
 };

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { getUser } from './redux/actions/userActions';
 import { initializeAuth } from './redux/actions/authActions';
+import Settings from './pages/Settings';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/settings" element={<Settings/>}/>
       </Routes>
     </Router>
   );
