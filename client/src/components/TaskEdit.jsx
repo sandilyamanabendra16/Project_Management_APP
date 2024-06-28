@@ -1,24 +1,28 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateTask } from '../redux/actions/taskActions';
 import styles from "./TaskEdit.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { MdDelete } from "react-icons/md";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+
 
 const TaskEdit = ({task, setIsEditing}) => {
     const dispatch = useDispatch();
     const id = task._id;
     console.log(task);
-
+    const authState = useSelector(state => state.auth);
+    const [assigned, setAssigned] = useState(false);
     const [formData, setFormData] = useState({
         title: task.title,
         description: task.description,
         priority: task.priority,
         dueDate: task.dueDate,
+        sharedWith: task.sharedWith || [],
         checklist: task.checklist || [] // Ensure checklist is initialized
       });
-    const { title, priority, dueDate, sharedWidth, checklist } = formData;
+    const { title, priority, dueDate, sharedWith, checklist } = formData;
 
     const handleEditChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,9 +60,29 @@ const TaskEdit = ({task, setIsEditing}) => {
       const handleDateChange = date => {
         setFormData({ ...formData, dueDate: date });
       };
-      
+      const toggleChecklist = () => {
+        setAssigned(!assigned);
+      };
       const completedChecklistItems = checklist.filter(item => item.completed).length;
         const totalChecklistItems = checklist.length;
+
+    const getInitials = email => {
+            return email?.slice(0, 2).toUpperCase();
+          };
+
+    const onChange = e => {
+    if (e.target.name === 'sharedWith') {
+      const value = e.target.value.split(',').map(item => item.trim()).filter(item => item);
+      setFormData({ ...formData, sharedWith: value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+    const handleAssignEmail = email => {
+        if (email && !sharedWith.includes(email)) {
+            setFormData({ ...formData, sharedWith: [...sharedWith, email] });
+        }
+    };
   return (
     <div className={styles.overlay}>
         <div className={styles.user}>
@@ -115,15 +139,33 @@ const TaskEdit = ({task, setIsEditing}) => {
       </div>
       <div className={styles.assign}>
         <label>Assign to</label>
-        <input type="text" name="sharedWidth" value={sharedWidth} onChange={handleEditChange} placeholder="Add an assignee" />
+        <div className={styles.arrow}>
+          <input
+            type="text"
+            name="sharedWith"
+            value={sharedWith.join(', ')}
+            onChange={onChange}
+            placeholder="Add an assignee"
+          />
+          {assigned ? <FaChevronDown onClick={toggleChecklist} /> : <FaChevronUp onClick={toggleChecklist} />}
+        </div>
       </div>
-            
-            {/* <input 
-              type="date" 
-              name="dueDate" 
-              value={formData.dueDate} 
-              onChange={handleEditChange} 
-            /> */}
+      {assigned && (
+        <div className={styles.peopleAdded}>
+          {authState.authData.user.peopleAdded.map(email => (
+            <div key={email} className={styles.emailItem}>
+              <div>
+                <span className={styles.emailInitialsCircle}>
+                  {getInitials(email)}
+                </span>
+                <span>{email}</span>
+              </div>
+              <button type="button" onClick={() => handleAssignEmail(email)}>Assign</button>
+            </div>
+          ))}
+        </div>
+      )}
+
 
         <div className={styles.checklist}>
             <div>

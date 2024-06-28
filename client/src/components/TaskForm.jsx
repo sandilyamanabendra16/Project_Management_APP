@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../redux/actions/taskActions';
 import styles from "./TaskForm.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { MdDelete } from "react-icons/md";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const TaskForm = ({ setAddtasks }) => {
+  const authState = useSelector(state => state.auth);
   const [formData, setFormData] = useState({
     title: '',
     priority: 'low',
     dueDate: '',
-    sharedWidth: [],
+    sharedWith: [],
     checklist: [],
   });
-
-  const { title, priority, dueDate, sharedWidth, checklist } = formData;
+  const [assigned, setAssigned] = useState(false);
+  const { title, priority, dueDate, sharedWith, checklist } = formData;
 
   const dispatch = useDispatch();
 
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = e => {
+    if (e.target.name === 'sharedWith') {
+      const value = e.target.value.split(',').map(item => item.trim()).filter(item => item);
+      setFormData({ ...formData, sharedWith: value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
 
   const addChecklistItem = () => {
     setFormData({
@@ -51,30 +60,44 @@ const TaskForm = ({ setAddtasks }) => {
     setFormData({ ...formData, priority });
   };
 
+  const handleAssignEmail = email => {
+    if (email && !sharedWith.includes(email)) {
+      setFormData({ ...formData, sharedWith: [...sharedWith, email] });
+    }
+  };
+
   const onSubmit = e => {
     e.preventDefault();
-    if(!title || !priority || !checklist ){
-      alert('Please fill * marked fields')
-    }else{
+    if (!title || !priority || !checklist) {
+      alert('Please fill * marked fields');
+    } else {
+      console.log('Form data before dispatch:', formData); // Debug statement
       dispatch(createTask(formData));
-    setFormData({
-      title: '',
-      priority: 'low',
-      dueDate: '',
-      sharedWidth: [],
-      checklist: []
-    });
-    setAddtasks(false);
+      setFormData({
+        title: '',
+        priority: 'low',
+        dueDate: '',
+        sharedWith: [],
+        checklist: []
+      });
+      setAddtasks(false);
     }
-    
   };
 
   const handleDateChange = date => {
     setFormData({ ...formData, dueDate: date });
   };
 
+  const toggleChecklist = () => {
+    setAssigned(!assigned);
+  };
+
   const completedChecklistItems = checklist.filter(item => item.completed).length;
   const totalChecklistItems = checklist.length;
+
+  const getInitials = email => {
+    return email?.slice(0, 2).toUpperCase();
+  };
 
   return (
     <form onSubmit={onSubmit} className={styles.submit}>
@@ -128,11 +151,35 @@ const TaskForm = ({ setAddtasks }) => {
       </div>
       <div className={styles.assign}>
         <label>Assign to</label>
-        <input type="text" name="sharedWidth" value={sharedWidth} onChange={onChange} placeholder="Add an assignee" />
+        <div className={styles.arrow}>
+          <input
+            type="text"
+            name="sharedWith"
+            value={sharedWith.join(', ')}
+            onChange={onChange}
+            placeholder="Add an assignee"
+          />
+          {assigned ? <FaChevronDown onClick={toggleChecklist} /> : <FaChevronUp onClick={toggleChecklist} />}
+        </div>
       </div>
+      {assigned && (
+        <div className={styles.peopleAdded}>
+          {authState.authData.user.peopleAdded.map(email => (
+            <div key={email} className={styles.emailItem}>
+              <div>
+                <span className={styles.emailInitialsCircle}>
+                  {getInitials(email)}
+                </span>
+                <span>{email}</span>
+              </div>
+              <button type="button" onClick={() => handleAssignEmail(email)}>Assign</button>
+            </div>
+          ))}
+        </div>
+      )}
       <div className={styles.checklist}>
         <div>
-            <label>Checklist ({completedChecklistItems}/{totalChecklistItems}) <span>*</span></label>
+          <label>Checklist ({completedChecklistItems}/{totalChecklistItems}) <span>*</span></label>
         </div>
         <ul>
           {checklist.map((item, index) => (
@@ -150,26 +197,24 @@ const TaskForm = ({ setAddtasks }) => {
               />
               <button type="button" onClick={() => removeChecklistItem(index)}><MdDelete color='red' /></button>
             </li>
-          ))}        
+          ))}
           <button type="button" onClick={addChecklistItem} className={styles.button2}> + Add New</button>
-
         </ul>
       </div>
       <div className={styles.button3}>
         <div className={styles.dueDate}>
-        <DatePicker
-          selected={dueDate}
-          onChange={handleDateChange}
-          placeholderText="Select Due Date"
-          className={styles.datep}
-        />
+          <DatePicker
+            selected={dueDate}
+            onChange={handleDateChange}
+            placeholderText="Select Due Date"
+            className={styles.datep}
+          />
+        </div>
+        <div className={styles.buttons}>
+          <button type="button" onClick={() => setAddtasks(false)} className={styles.btn2}>Cancel</button>
+          <button type="submit" className={styles.btn1}>Save</button>
+        </div>
       </div>
-      <div className={styles.buttons}>
-        <button type="button" onClick={() => setAddtasks(false)} className={styles.btn2}>Cancel</button>
-        <button type="submit" className={styles.btn1}>Save</button>
-      </div>
-      </div>
-      
     </form>
   );
 };

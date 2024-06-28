@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, updateTask } from '../redux/actions/taskActions';
 import styles from "./TaskItem.module.css";
 import TaskEdit from "./TaskEdit";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaLessThanEqual } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
 
-const TaskItem = ({ task, checkopen, setCheckopen}) => {
+const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=false}) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
-  const [isChecklistOpen, setIsChecklistOpen] = useState(false); // New state for checklist dropdown
+  const [isChecklistOpenstate, setIsChecklistOpenstate] = useState(isChecklistOpen); // New state for checklist dropdown
   const [formData, setFormData] = useState({
     title: task.title,
     description: task.description,
@@ -91,7 +91,7 @@ const TaskItem = ({ task, checkopen, setCheckopen}) => {
   };
 
   const toggleChecklist = () => {
-    setIsChecklistOpen(!isChecklistOpen); // Toggle the checklist visibility
+    setIsChecklistOpenstate(!isChecklistOpenstate); // Toggle the checklist visibility
   };
 
   const handleShare = () => {
@@ -115,9 +115,10 @@ const TaskItem = ({ task, checkopen, setCheckopen}) => {
         </div>
         
         <div className={styles.dropdown} ref={dropdownRef}>
+          {link && 
           <button onClick={handleButtonClick} className={styles.dotButton}>
             ...
-          </button>
+          </button>}
           {isOpen && (
             <div className={styles.dropdownMenu}>
               <button onClick={handleEdit} className={styles.dropdownItem}>Edit</button>
@@ -133,41 +134,59 @@ const TaskItem = ({ task, checkopen, setCheckopen}) => {
         <div>
           Checklist ({completedChecklistItems}/{totalChecklistItems})
         </div> 
-         <div className={styles.toggle}>
+        {link && <div className={styles.toggle}>
+          {isChecklistOpenstate || checkopen? <FaChevronDown />: <FaChevronUp />}
+         </div>}
+         {/* <div className={styles.toggle}>
           {isChecklistOpen || checkopen? <FaChevronDown />: <FaChevronUp />}
-         </div>
+         </div> */}
       </p>
 
-      {isChecklistOpen && (
+      {isChecklistOpenstate || checkopen ? (
         <ul>
           {task.checklist && task.checklist.map((item, index) => (
             <li key={index}>
-              <input
+              {link ? <input
                 type="checkbox"
                 checked={item.completed}
                 onChange={() => toggleChecklistItemCompletion(index)}
-              />
+              />: <input
+              type="checkbox"
+              checked={item.completed}
+            /> }
               <span>
                 {formatChecklistText(item.text)}
               </span>
             </li>
           ))}
         </ul>
-      )}
+      ):null}
       
       <div className={styles.taskbtns}>
-        <div className={getDateClass()}>
+        {link? <div className={getDateClass()}>
+          {task.dueDate && new Date(task.dueDate).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long'
+          })}
+        </div>:  
+        <div className={styles.date1}>
+         { task.dueDate? <span>Due Date</span>: null }<div className={getDateClass()}>
           {task.dueDate && new Date(task.dueDate).toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'long'
           })}
         </div>
+        </div>}
+        
+        {link && 
         <div>
-          {task.status !== 'todo' && <button onClick={() => onUpdateStatus('todo')} className={styles.taskbtns1}>To Do</button>}
-          {task.status !== 'in-progress' && <button onClick={() => onUpdateStatus('in-progress')} className={styles.taskbtns1}>Progress</button>}
-          {task.status !== 'done' && <button onClick={() => onUpdateStatus('done')} className={styles.taskbtns1}>Done</button>}
-          {task.status !== 'backlog' && <button onClick={() => onUpdateStatus('backlog')} className={styles.taskbtns1}>Backlog</button>}
-        </div>
+        {task.status !== 'todo' && <button onClick={() => onUpdateStatus('todo')} className={styles.taskbtns1}>To Do</button>}
+        {task.status !== 'in-progress' && <button onClick={() => onUpdateStatus('in-progress')} className={styles.taskbtns1}>Progress</button>}
+        {task.status !== 'done' && <button onClick={() => onUpdateStatus('done')} className={styles.taskbtns1}>Done</button>}
+        {task.status !== 'backlog' && <button onClick={() => onUpdateStatus('backlog')} className={styles.taskbtns1}>Backlog</button>}
+      </div>
+        }
+        
       </div>
 
       <div>

@@ -10,9 +10,9 @@ const taskSchema = new mongoose.Schema({
   title: { type: String, required: true, maxlength: 255 },
   priority: { type: String, enum: ['low', 'medium', 'high'], required: true },
   dueDate: { type: Date },
-  status: { type: String, enum: ['backlog', 'todo', 'in-progress', 'done'], default: 'backlog' },
+  status: { type: String, enum: ['backlog', 'todo', 'in-progress', 'done'], default: 'todo' },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  sharedWith: [String],
   checklist: [checklistItemSchema],
 }, { timestamps: true });
 

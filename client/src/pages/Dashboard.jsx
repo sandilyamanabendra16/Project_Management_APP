@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
-import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import { fetchTasks } from '../redux/actions/taskActions';
-import { addPeople } from '../redux/actions/userActions';
 import { logout } from '../redux/actions/authActions';
 import { CiSettings } from "react-icons/ci";
 import { GoDatabase } from "react-icons/go";
@@ -22,12 +20,11 @@ const Dashboard = () => {
   const [taskboard, setTaskboard]=useState(true);
   const [settings, setSettings]=useState(false);
   const [analyt, setAnalyt]=useState(false);
-  // const [people, setPeople] = useState('');
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   dispatch(fetchTasks());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
   if (!authState.isAuthenticated) {
     return <Navigate to="/login" />;
@@ -42,18 +39,7 @@ const Dashboard = () => {
     setSettings(false);
     setTaskboard(false);
   }
-  // console.log(authState.user);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const id = authState.authData?.user?._id;
-  //   if (id) {
-  //     dispatch(addPeople(id, people));
-  //   } else {
-  //     console.error('User ID is null');
-  //   }
-  // };
-
-
+  
 
   return (
 

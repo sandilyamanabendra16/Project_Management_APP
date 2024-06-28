@@ -5,6 +5,7 @@ import { FindTasks } from '../redux/actions/taskActions';
 import TaskForm from "../components/TaskForm.jsx";
 import styles from "./TaskPage.module.css";
 import TaskItem from '../components/TaskItem';
+import { FiCodesandbox } from "react-icons/fi";
 
 const TaskPage = () => {
     const { id } = useParams();
@@ -26,9 +27,9 @@ const TaskPage = () => {
       }
   return (
     <div className={styles.main}>
-        <div>TaskPage</div>
+        <div className={styles.main1}><h3>  <FiCodesandbox margin='10px' /> Pro Manage</h3></div>
         <div className={styles.task}>
-            <TaskItem task={task} link={link} SetLink={SetLink}/>
+            <TaskItem task={task} link={false} isChecklistOpen={true}/>
         </div>
         
     </div>

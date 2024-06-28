@@ -8,7 +8,7 @@ const Register = () => {
   const authState = useSelector(state => state.auth);
 
   if (authState.isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />
   }
 
   return (

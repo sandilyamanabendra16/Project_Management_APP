@@ -27,13 +27,13 @@ justify-content: space-between;
     border-radius: 10px;
  }
 
-.inprogress { 
+.in-progress { 
     grid-area: 2 / 5 / 6 / 7; 
     background-color:#EEF2F5;
     border-radius: 10px;
 }
 
-.Done { 
+.done { 
     grid-area: 2 / 7 / 6 / 9;
     background-color:#EEF2F5;
     border-radius: 10px;

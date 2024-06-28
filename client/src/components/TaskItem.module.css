@@ -235,15 +235,20 @@
 
   .linkCopiedPopup {
     position: fixed;
-    top: 70px;
-    left: 50%;
+    top: 30px;
+    right: -2%;
     transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
+    background-color: #F6FFF9;
+    color: black;
+    border:solid;
+    border-color: #48C1B5;
+    padding: 10px 40px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: opacity 0.5s;
   }
   
+  .date1{
+    font-size: 13px;
+  }

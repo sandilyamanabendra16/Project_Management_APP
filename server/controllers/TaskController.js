@@ -5,10 +5,12 @@ const User = require('../models/User');
 const getTasks = async (req, res) => {
   const { filter } = req.query;
   const userId = req.user._id;
-  let query = { 
+  const userEmail = req.user.email; // Assuming the email is available on req.user
+
+  let query = {
     $or: [
       { user: userId },
-      { sharedWith: userId }
+      { sharedWith: userEmail }
     ]
   };
 
@@ -29,13 +31,14 @@ const getTasks = async (req, res) => {
   }
 
   try {
-    const tasks = await Task.find(query).sort('dueDate');
+    const tasks = await Task.find(query).sort({ dueDate: 1 });
     res.status(200).json(tasks);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tasks', error });
   }
 };
+
+
 
 const GetTaskbyId= async (req,res)=>{
   const {id}=req.params;

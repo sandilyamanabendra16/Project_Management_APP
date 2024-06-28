@@ -7,7 +7,7 @@ const { getTasks, createTask, updateTask, deleteTask, shareTask, GetTaskbyId } =
 router.get('/', auth, getTasks);
 
 // Get task by id
-router.get('/:id', auth, GetTaskbyId);
+router.get('/:id', GetTaskbyId);
 // Create a task
 router.post('/', auth, createTask);
 
