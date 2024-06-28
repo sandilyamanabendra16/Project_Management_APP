@@ -82,7 +82,7 @@ function TaskList() {
           <div className={styles.taskhead}>
             <h3>{status.charAt(0).toUpperCase() + status.slice(1)}</h3>
             <div>
-              <span onClick={() => setAddtasks(true)}> + </span>
+            {status === 'todo' && <span onClick={() => setAddtasks(true)}> + </span>}
               <HiOutlineSquare2Stack onClick={() => handleOpenChecklists(status)} />
             </div>
           </div>
