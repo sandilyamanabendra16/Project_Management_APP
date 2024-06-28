@@ -5,19 +5,17 @@ import styles from './Analytics.module.css';
 const Analytics = () => {
     const taskState = useSelector(state => state.taskReducer);
     const { tasks } = taskState;
-    const todos = tasks ? tasks.filter(item => item.status === "todo").length : 0;
-    const backlogs=tasks ? tasks.filter(item => item.status === "backlog").length : 0;
-    const inprogress=tasks ? tasks.filter(item => item.status === "in-progress").length : 0;
-    const completed= tasks ? tasks.filter(item => item.status === "done").length : 0;
+    const todos = tasks ? tasks.filter(item => item.status === "todo")?.length : 0;
+    const backlogs=tasks ? tasks.filter(item => item.status === "backlog")?.length : 0;
+    const inprogress=tasks ? tasks.filter(item => item.status === "in-progress")?.length : 0;
+    const completed= tasks ? tasks.filter(item => item.status === "done")?.length : 0;
     
     const today = new Date().toISOString().split('T')[0];;
     //Priority
-    const low = tasks ? tasks.filter(item => item.priority=== "low").length : 0;
-    const medium = tasks ? tasks.filter(item => item.priority=== "medium").length : 0;
-    const high = tasks ? tasks.filter(item => item.priority=== "high").length : 0;
-    const duedate = tasks ? tasks.filter(item => item.dueDate?.split('T')[0] === today).length : 0;
-    console.log(tasks[2].dueDate?.split('T')[0]);
-    console.log(today);
+    const low = tasks ? tasks.filter(item => item.priority=== "low")?.length : 0;
+    const medium = tasks ? tasks.filter(item => item.priority=== "medium")?.length : 0;
+    const high = tasks ? tasks.filter(item => item.priority=== "high")?.length : 0;
+    const duedate = tasks ? tasks.filter(item => item.dueDate?.split('T')[0] === today)?.length : 0;
 
     return (
         <div className={styles.main}>
