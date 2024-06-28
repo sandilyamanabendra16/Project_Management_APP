@@ -21,6 +21,12 @@ const taskReducer = (state = initialState, action) => {
           return { ...state, tasks: action.data, loading: false, error: false };
       case FETCH_TASKS_FAIL:
           return { ...state, loading: false, error: true };
+      case 'FIND_TASK_START':
+        return {...state, loading:true, error:false};
+      case 'FIND_TASK_SUCCESS':
+        return {...state, tasks: action.data, loading:false, error:false};
+      case 'FIND_TASK_FAIL':
+         return {...state, loading:false, error:true}
       case CREATE_TASK_SUCCESS:
           return { ...state, tasks: [...state.tasks, action.data], loading: false, error: false };
       case UPDATE_TASK_SUCCESS:

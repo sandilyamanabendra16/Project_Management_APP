@@ -6,6 +6,7 @@ const initialState = {
     updateLoading: false,
     userAlreadyExists: false,
     invalidEmailorPassword: false,
+    wrongoldpassword: false,
   };
   
   const authReducer = (state = initialState, action) => {
@@ -25,7 +26,7 @@ const initialState = {
       case 'RESET_USER_ALREADY_EXISTS':
       return {
         ...state,
-        userAlreadyExists: false, invalidEmailorPassword: false,
+        userAlreadyExists: false, invalidEmailorPassword: false, wrongoldpassword:false,
       };
       case 'INVALID_EMAIL_PASSWORD':
         return {...state, invalidEmailorPassword:true}
@@ -43,6 +44,11 @@ const initialState = {
         return { ...state, authData: action.payload, updateLoading: false, error: false };
       case 'UPDATE_FAIL':
         return { ...state, updateLoading: false, error: true };
+      case 'INVALID_PASSWORD':
+        return {
+          ...state,
+          wrongoldpassword: true,
+        }
       case 'LOGOUT':
         localStorage.clear();
         return { ...state, authData: null, loading: false, error: false, isAuthenticated: false };

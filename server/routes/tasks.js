@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const { getTasks, createTask, updateTask, deleteTask, shareTask } = require('../controllers/TaskController');
+const { getTasks, createTask, updateTask, deleteTask, shareTask, GetTaskbyId } = require('../controllers/TaskController');
 
 // Get tasks (with filter)
 router.get('/', auth, getTasks);
+
+// Get task by id
+router.get('/:id', auth, GetTaskbyId);
 // Create a task
 router.post('/', auth, createTask);
 

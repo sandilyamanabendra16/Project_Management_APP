@@ -12,11 +12,16 @@ import { FiLayout } from "react-icons/fi";
 import { FiCodesandbox } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
 import styles from "./Dashboard.module.css"
+import Settings from "./Settings";
+import Analytics from "./Analytics";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const authState = useSelector(state => state.auth);
   const [addemail, setAdduseremail]= useState(false);
+  const [taskboard, setTaskboard]=useState(true);
+  const [settings, setSettings]=useState(false);
+  const [analyt, setAnalyt]=useState(false);
   // const [people, setPeople] = useState('');
   const navigate = useNavigate();
 
@@ -28,10 +33,15 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
 
-  // const handleChange = (e) => {
-  //   setPeople(e.target.value);
-  // };
-
+  const handlesetting=()=>{
+    setTaskboard(false);
+    setSettings(true);
+  }
+  const handleanalyt=()=>{
+    setAnalyt(true);
+    setSettings(false);
+    setTaskboard(false);
+  }
   // console.log(authState.user);
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -43,6 +53,8 @@ const Dashboard = () => {
   //   }
   // };
 
+
+
   return (
 
     <div className={styles.parent}>
@@ -51,9 +63,9 @@ const Dashboard = () => {
       <div>
         <h3>  <FiCodesandbox /> Pro Manage</h3>
       </div>
-          <div> <FiLayout /> Board</div>
-          <div> <GoDatabase /> Anlytics</div>
-          <div onClick={()=>navigate("/settings")} >
+          <div onClick={()=>setTaskboard(true)}> <FiLayout /> Board</div>
+          <div onClick={handleanalyt}> <GoDatabase /> Anlytics</div>
+          <div onClick={handlesetting} >
             <CiSettings /> Settings
           </div>
       </div>
@@ -70,7 +82,11 @@ const Dashboard = () => {
         <button type="submit">Add People</button>
       </form> */}
       {/* <TaskForm /> */}
-      <TaskList />
+      
+      {taskboard && <TaskList />}
+      {analyt && <Analytics/>}
+      {settings && <Settings/>}
+      
       </div>
       {addemail && 
       <div className={styles.overlay}>

@@ -23,6 +23,10 @@ export const updateUser = (id, formData) => async (dispatch) => {
         const { data } = await UserApi.updateUser(id, formData);
         dispatch({ type: "UPDATE_SUCCESS", data: data });
     } catch (err) {
+        console.log(err.response)
+        if (err.response && err.response.data.error === 'Old password is incorrect') {
+            dispatch({ type: 'INVALID_PASSWORD' });
+          }
         dispatch({ type: "UPDATE_FAILURE" });
     }
 };

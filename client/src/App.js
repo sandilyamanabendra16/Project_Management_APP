@@ -8,7 +8,7 @@ import Register from './pages/Register';
 import { getUser } from './redux/actions/userActions';
 import { initializeAuth } from './redux/actions/authActions';
 import Settings from './pages/Settings';
-
+import TaskPage from './pages/TaskPage';
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -32,6 +32,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/settings" element={<Settings/>}/>
+        <Route path="/task/:id" element={<TaskPage/>} />
       </Routes>
     </Router>
   );

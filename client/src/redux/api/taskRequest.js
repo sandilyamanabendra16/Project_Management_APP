@@ -18,3 +18,4 @@ export const fetchTasks = () => API.get('/tasks');
 export const createTask = (formData) => API.post('/tasks', formData);
 export const updateTask = (id, formData) => API.put(`/tasks/${id}`, formData);
 export const deleteTask = (id) => API.delete(`/tasks/${id}`);
+export const findTask=(id)=> API.get(`/tasks/${id}`);

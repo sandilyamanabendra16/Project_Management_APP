@@ -21,6 +21,15 @@ export const fetchTasks = () => async dispatch => {
     }
 };
 
+export const FindTasks=()=> async dispatch=>{
+  dispatch({type:'FIND_TASK_START'});
+  try{
+    const {data}= await TaskApi.findTask();
+    dispatch({type: 'FIND_TASK_SUCCESS', data:data});
+  }catch(err){
+    dispatch({type:'FIND_TASK_FAIL'})
+  }
+}
 // Create Task
 export const createTask = (formData) => async dispatch => {
     try {

@@ -1,0 +1,39 @@
+.main{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin:2%;
+}
+.inner{
+    background-color:#F9FCFF ;
+    padding: 4% 4% 2% 4%;
+    margin: 3% 0% 0 2%;
+    border-radius: 10px;
+    height: inherit;
+    width: 30%;
+}
+.both{
+    display: flex;
+
+}
+.inner div{
+    display: flex;
+    justify-content: space-between;
+}
+.inner span{
+    margin-bottom: 7%;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+}
+.inner span div{
+    margin-right: 20px;
+}
+.Circle{
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: #18B0FF; 
+    margin-right: 5px; 
+}

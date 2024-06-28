@@ -13,6 +13,7 @@ const TaskList = () => {
   const dispatch = useDispatch();
   const authState = useSelector(state => state.auth);
   const taskState = useSelector(state => state.taskReducer);
+  const [checkopen, setCheckopen]= useState(false)
   const { tasks, loading, error } = taskState;
 const [adduseremail, setAdduseremail]=useState(false);
 const[addtasks, setAddtasks]=useState(false);
@@ -25,11 +26,11 @@ console.log(addtasks);
   const renderTasks = (status) => (
     tasks
       .filter(task => task.status === status)
-      .map(task => <TaskItem key={task._id} task={task} />)
+      .map(task => <TaskItem key={task._id} task={task} checkopen ={checkopen} setCheckopen={setCheckopen} />)
   );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-console.log(authState.authData.user.name);
+
 
 
   return (
@@ -54,11 +55,14 @@ console.log(authState.authData.user.name);
         <div class={styles.backlog}>
             <div className={styles.taskhead}>
                 <h3> Backlog</h3>
-                <HiOutlineSquare2Stack/>
+                <HiOutlineSquare2Stack onClick={()=>setCheckopen(true)}/>
             </div>
-            <div className={styles.task1}>
-               {renderTasks('backlog')} 
+            <div className={styles.task2}>
+                <div className={styles.task1}>
+                    {renderTasks('backlog')} 
+                </div>
             </div>
+            
             
         </div>
         <div class={styles.todo}>
@@ -66,32 +70,41 @@ console.log(authState.authData.user.name);
                 <h3> To do</h3>
                 <div>
                 <span onClick={()=>setAddtasks(true)}> +</span>
-                <HiOutlineSquare2Stack/>
+                <HiOutlineSquare2Stack onClick={()=>setCheckopen(true)}/>
                 </div>
             </div>
-            <div className={styles.task1}>
+            <div className={styles.task2}>
+                <div className={styles.task1}>
                 {renderTasks('todo')}
             </div>
+            </div>
+            
             
         </div>
         <div class={styles.inprogress}>
             <div className={styles.taskhead}>
                 <h3>In progress</h3>
-                <HiOutlineSquare2Stack/>
+                <HiOutlineSquare2Stack onClick={()=>setCheckopen(true)}/>
             </div>
-            <div className={styles.task1}>
+            <div className={styles.task2}>
+                <div className={styles.task1}>
                 {renderTasks('in-progress')}
             </div>
+            </div>
+            
             
         </div>
         <div class={styles.Done}>
             <div className={styles.taskhead}>
                 <h3>Done</h3>
-                <HiOutlineSquare2Stack/>
+                <HiOutlineSquare2Stack onClick={()=>setCheckopen(true)}/>
             </div>
-            <div className={styles.task1}>
-              {renderTasks('done')}  
+            <div className={styles.task2}>
+                <div className={styles.task1}>
+                    {renderTasks('done')}  
+                </div>
             </div>
+            
             
         </div>
         {adduseremail && 

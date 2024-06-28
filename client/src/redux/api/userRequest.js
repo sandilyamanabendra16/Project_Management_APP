@@ -14,7 +14,7 @@ API.interceptors.request.use((req) => {
   });
 export const getUser = (userId) => API.get(`/users/${userId}`) ;
 
-export const updateUser=(id, formData)=>API.patch(`/users/${id}`, formData);
+export const updateUser=(id, formData)=>API.put(`/users/${id}`, formData);
 
 // export const addPeople=(id, people)=>API.post(`/users/add/${id}`, {people});
 export const addPeople=(userId, email)=>API.post(`/users/add/${userId}`, { email });

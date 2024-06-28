@@ -30,12 +30,26 @@ const getTasks = async (req, res) => {
 
   try {
     const tasks = await Task.find(query).sort('dueDate');
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 
+const GetTaskbyId= async (req,res)=>{
+  const {id}=req.params;
+  try{
+    const task= await Task.findById(id);
+    if(!task){
+      return res.status(400).json("Task not found");
+    }
+    res.status(200).json(task);
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
+}
 // Create a new task
 const createTask = async (req, res) => {
   const { title, priority, dueDate, status, sharedWith, checklist } = req.body;
@@ -135,4 +149,4 @@ const shareTask = async (req, res) => {
 
 
 
-module.exports = { getTasks, createTask, updateTask, deleteTask, shareTask };
+module.exports = { getTasks, GetTaskbyId, createTask, updateTask, deleteTask, shareTask };

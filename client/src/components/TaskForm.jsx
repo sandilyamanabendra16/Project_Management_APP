@@ -53,7 +53,10 @@ const TaskForm = ({ setAddtasks }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    dispatch(createTask(formData));
+    if(!title || !priority || !checklist ){
+      alert('Please fill * marked fields')
+    }else{
+      dispatch(createTask(formData));
     setFormData({
       title: '',
       priority: 'low',
@@ -62,6 +65,8 @@ const TaskForm = ({ setAddtasks }) => {
       checklist: []
     });
     setAddtasks(false);
+    }
+    
   };
 
   const handleDateChange = date => {
