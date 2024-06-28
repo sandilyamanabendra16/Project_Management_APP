@@ -10,10 +10,16 @@ export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const DELETE_TASK_SUCCESS = 'DELETE_TASK_SUCCESS';
 
 // Fetch Tasks
-export const fetchTasks = () => async dispatch => {
+export const fetchTasks = (filter) => async dispatch => {
   
     dispatch({ type: FETCH_TASKS_START });
     try {
+      dispatch({ type: 'FETCH_TASKS_REQUEST' });
+
+      let url = '/api/tasks';
+      if (filter) {
+        url += `?filter=${filter}`;
+      }
         const {data} = await TaskApi.fetchTasks();
         dispatch({ type: FETCH_TASKS_SUCCESS, data: data });
     } catch (err) {

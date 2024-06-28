@@ -17,6 +17,12 @@ const taskReducer = (state = initialState, action) => {
   switch (action.type) {
       case FETCH_TASKS_START:
           return { ...state, loading: true, error: false };
+      case 'FETCH_TASKS_REQUEST':
+          return {
+              ...state,
+              loading: true,
+              error: null,
+            };
       case FETCH_TASKS_SUCCESS:
           return { ...state, tasks: action.data, loading: false, error: false };
       case FETCH_TASKS_FAIL:

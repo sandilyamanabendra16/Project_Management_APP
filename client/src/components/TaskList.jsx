@@ -17,6 +17,7 @@ function TaskList() {
   const { tasks = [], loading, error } = taskState; // Ensure tasks is always an array
   const [adduseremail, setAdduseremail] = useState(false);
   const [addtasks, setAddtasks] = useState(false);
+  const [filter, setFilter] = useState('Today');
   const [openChecklists, setOpenChecklists] = useState({
     backlog: false,
     todo: false,
@@ -27,8 +28,8 @@ function TaskList() {
   const formatdate = formatDate();
 
   useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+    dispatch(fetchTasks(filter));
+  }, [dispatch, filter]);
 
   const handleOpenChecklists = (status) => {
     setOpenChecklists((prev) => ({ ...prev, [status]: !prev[status] }));
@@ -50,7 +51,9 @@ function TaskList() {
       />
     ));
   };
-
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -66,7 +69,7 @@ function TaskList() {
         </div>
         <div className={styles.header2}>
           <h2 style={{ color: 'grey' }}>{formatdate}</h2>
-          <select name="filter">
+          <select name="filter" value={filter} onChange={handleFilterChange}>
             <option value="Today">Today</option>
             <option value="Week">This Week</option>
             <option value="Month">This Month</option>
