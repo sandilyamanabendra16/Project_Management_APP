@@ -32,6 +32,7 @@ const Dashboard = () => {
 
   const handlesetting=()=>{
     setTaskboard(false);
+    setAnalyt(false);
     setSettings(true);
   }
   const handleanalyt=()=>{
