@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../redux/actions/taskActions';
 import styles from "./TaskForm.module.css";
@@ -20,6 +20,13 @@ const TaskForm = ({ setAddtasks }) => {
   const { title, priority, dueDate, sharedWith, checklist } = formData;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Ensure the component re-renders when authState changes
+    if (authState.authData) {
+      setFormData({ ...formData, sharedWith: authState.authData.user.peopleAdded });
+    }
+  }, [authState]);
 
   const onChange = e => {
     if (e.target.name === 'sharedWith') {

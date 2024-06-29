@@ -49,8 +49,8 @@ export const addPeople = (userId, email) => async dispatch => {
   try {
     const { data } = await UserApi.addPeople(userId, email);
     dispatch({
-      type: ADD_PEOPLE,
-      payload: data,
+      type: 'ADD_PEOPLE_SUCCESS',
+      payload: email,
     });
   } catch (error) {
     console.error('Error adding people:', error);

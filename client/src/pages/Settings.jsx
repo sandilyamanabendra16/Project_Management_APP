@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from '../utils/api';
 import { CiMail } from "react-icons/ci";
 import { AiFillLock } from "react-icons/ai";
 import { LuEye } from "react-icons/lu";
