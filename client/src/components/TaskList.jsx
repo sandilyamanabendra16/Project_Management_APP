@@ -17,7 +17,7 @@ function TaskList() {
   const { tasks = [], loading, error } = taskState; // Ensure tasks is always an array
   const [adduseremail, setAdduseremail] = useState(false);
   const [addtasks, setAddtasks] = useState(false);
-  const [filter, setFilter] = useState('Today');
+  const [filter, setFilter] = useState('month');
   const [openChecklists, setOpenChecklists] = useState({
     backlog: false,
     todo: false,
@@ -70,9 +70,9 @@ function TaskList() {
         <div className={styles.header2}>
           <h2 style={{ color: 'grey' }}>{formatdate}</h2>
           <select name="filter" value={filter} onChange={handleFilterChange}>
-            <option value="Today">Today</option>
-            <option value="Week">This Week</option>
-            <option value="Month">This Month</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
           </select>
         </div>
       </div>

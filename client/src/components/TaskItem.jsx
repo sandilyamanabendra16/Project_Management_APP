@@ -53,9 +53,11 @@ const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=fa
     }
     const dueDate = new Date(task.dueDate);
     const today = new Date();
+    const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() -1);
     if (task.status === 'done') {
       return styles.dateDone;
-    } else if (dueDate < today) {
+    } else if (dueDate < tomorrow) {
       return styles.dateOverdue;
     } else {
       return styles.dateNormal;

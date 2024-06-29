@@ -21,12 +21,6 @@ const TaskForm = ({ setAddtasks }) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Ensure the component re-renders when authState changes
-    if (authState.authData) {
-      setFormData({ ...formData, sharedWith: authState.authData.user.peopleAdded });
-    }
-  }, [authState]);
 
   const onChange = e => {
     if (e.target.name === 'sharedWith') {

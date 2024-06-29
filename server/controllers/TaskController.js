@@ -1,11 +1,10 @@
 const Task = require('../models/Task');
 const User = require('../models/User');
 
-// Get all tasks with optional filter
 const getTasks = async (req, res) => {
   const { filter } = req.query;
   const userId = req.user._id;
-  const userEmail = req.user.email; // Assuming the email is available on req.user
+  const userEmail = req.user.email;
 
   let query = {
     $or: [
@@ -17,23 +16,31 @@ const getTasks = async (req, res) => {
   const now = new Date();
 
   if (filter === 'today') {
-    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(now.setHours(23, 59, 59, 999));
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
     query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
-    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
-    const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(now);
+    endOfWeek.setDate(now.getDate() - now.getDay() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
-
+  
   try {
-    const tasks = await Task.find(query).sort({ dueDate: 1 });
+    
+    const tasks = await Task.find(query).sort({ dueDate: 1 }); // Sort tasks by dueDate in ascending order
     res.status(200).json(tasks);
   } catch (error) {
+    console.error('Error fetching tasks:', error);
     res.status(500).json({ message: 'Error fetching tasks', error });
   }
 };
