@@ -13,6 +13,7 @@ const LoginForm = () => {
     email: '',
     password: ''
   });
+  const [inputType, setInputType] = useState(false);
   const auth = useSelector(state => state.auth);
   const navigate = useNavigate();
 
@@ -40,6 +41,11 @@ const LoginForm = () => {
     dispatch(logIn(formData));
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setInputType(!inputType);
+  };
+
   useEffect(() => {
     if (auth.isAuthenticated) {
       navigate('/dashboard');
@@ -57,7 +63,7 @@ const LoginForm = () => {
       <div className={styles.email}>
       <AiFillLock color='gray'/>
         <input type="password" name="password" value={password} onChange={onChange} placeholder='Password' />
-        <LuEye color='gray'/>
+        <LuEye color='gray' onClick={togglePasswordVisibility}/>
       </div>
       
       <button type="submit" className={styles.button}>Log in</button>

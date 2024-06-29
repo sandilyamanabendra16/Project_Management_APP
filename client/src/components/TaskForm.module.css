@@ -208,7 +208,7 @@
     right:8%;
     border: solid 1px #E2E2E2;
     width:65%;
-    height: 30%;
+    max-height: 30%;
     padding: 2%;
     background-color: white;
     overflow-y: scroll;

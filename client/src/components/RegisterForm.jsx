@@ -17,6 +17,7 @@ const RegisterForm = () => {
   });
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const [inputType, setInputType] = useState('password');
   
   const { name, email, password, cpassword } = formData;
 
@@ -49,6 +50,10 @@ const RegisterForm = () => {
         alert("Password and Confirm Password doesn't match");
       }
     }
+  };
+  
+  const togglePasswordVisibility = () => {
+    setInputType(prevType => prevType === 'password' ? 'text' : 'password');
   };
 
   return (
@@ -83,7 +88,7 @@ const RegisterForm = () => {
             onChange={onChange} 
             placeholder='Password' 
           />
-          <LuEye color='gray' />
+          <LuEye color='gray' onClick={togglePasswordVisibility}/>
         </div>
         <div className={styles.email}>
           <AiFillLock color='gray' />
