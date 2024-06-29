@@ -116,7 +116,7 @@
     list-style-type: none;
     list-style: none;
     padding-left: 0;
-
+    height: inherit;
   }
   
   .main li {
@@ -251,4 +251,9 @@
   
   .date1{
     font-size: 13px;
+  }
+
+  .check1{
+    max-height:400px;
+    overflow-y: scroll;
   }

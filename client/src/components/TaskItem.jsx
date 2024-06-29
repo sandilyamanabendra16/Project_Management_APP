@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, updateTask } from '../redux/actions/taskActions';
 import styles from "./TaskItem.module.css";
@@ -10,7 +10,9 @@ const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=fa
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
-  const [isChecklistOpenstate, setIsChecklistOpenstate] = useState(isChecklistOpen); // New state for checklist dropdown
+  const [isChecklistOpenstate, setIsChecklistOpenstate] = useState(isChecklistOpen);
+  // const [link1 , setLink1]=useState(link);
+  // New state for checklist dropdown
   const [formData, setFormData] = useState({
     title: task.title,
     description: task.description,
@@ -105,6 +107,9 @@ const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=fa
     setIsOpen(false);
   };
 
+  // useEffect(()=>{
+  //   setLink1(!link1);
+  // },[])
   return (
     <div className={styles.main}>
 
@@ -141,8 +146,8 @@ const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=fa
           {isChecklistOpen || checkopen? <FaChevronDown />: <FaChevronUp />}
          </div> */}
       </p>
-
-      {isChecklistOpenstate || checkopen ? (
+        <div className={link? styles.check2: styles.check1}>
+        {isChecklistOpenstate || checkopen ? (
         <ul>
           {task.checklist && task.checklist.map((item, index) => (
             <li key={index}>
@@ -161,6 +166,8 @@ const TaskItem = ({ task, checkopen, setCheckopen, link=true, isChecklistOpen=fa
           ))}
         </ul>
       ):null}
+        </div>
+      
       
       <div className={styles.taskbtns}>
         {link? <div className={getDateClass()}>

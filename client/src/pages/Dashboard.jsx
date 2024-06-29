@@ -40,6 +40,11 @@ const Dashboard = () => {
     setSettings(false);
     setTaskboard(false);
   }
+  const handleboard=()=>{
+    setAnalyt(false);
+    setSettings(false);
+    setTaskboard(true)
+  }
   
 
   return (
@@ -50,7 +55,7 @@ const Dashboard = () => {
       <div>
         <h3>  <FiCodesandbox /> Pro Manage</h3>
       </div>
-          <div onClick={()=>setTaskboard(true)}> <FiLayout /> Board</div>
+          <div onClick={handleboard}> <FiLayout /> Board</div>
           <div onClick={handleanalyt}> <GoDatabase /> Anlytics</div>
           <div onClick={handlesetting} >
             <CiSettings /> Settings
