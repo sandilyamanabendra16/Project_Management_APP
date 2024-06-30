@@ -17,7 +17,7 @@ const getTasks = async (req, res) => {
   const tomorrow = new Date(now);
   const tomorrow1= new Date(now);
   tomorrow.setDate(now.getDate()-1);
-  tomorrow1.setData(now.getDate());
+  tomorrow1.setDate(now.getDate());
 
   if (filter === 'today') {
     const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 0, 0, 0, 0);
