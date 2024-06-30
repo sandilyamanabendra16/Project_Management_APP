@@ -25,11 +25,11 @@ const getTasks = async (req, res) => {
     query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
     const startOfWeek = new Date(tomorrow);
-    startOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay()+ 1);
+    startOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay());
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(now);
-    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 7);
+    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 6);
     endOfWeek.setHours(23, 59, 59, 999);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
@@ -38,7 +38,7 @@ const getTasks = async (req, res) => {
     const endOfMonth = new Date(tomorrow.getFullYear(), tomorrow.getMonth() + 1, 0, 23, 59, 59, 999);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
-  
+
   try {
     
     const tasks = await Task.find(query).sort({ dueDate: 1 }); // Sort tasks by dueDate in ascending order
