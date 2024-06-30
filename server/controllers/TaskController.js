@@ -20,21 +20,34 @@ const getTasks = async (req, res) => {
   tomorrow1.setDate(now.getDate());
 
   if (filter === 'today') {
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-    query.dueDate = { $gte: startOfDay, $lte: endOfDay };
-  } else if (filter === 'week') {
-    const startOfWeek = new Date(tomorrow);
-    startOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay());
-    startOfWeek.setHours(0, 0, 0, 0);
+    const now = new Date();
 
-    const endOfWeek = new Date(tomorrow);
-    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 7);
+// Get the start of the current day in UTC
+  const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+
+// Get the end of the current day in UTC
+  const endOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
+
+query.dueDate = { $gte: startOfDay, $lte: endOfDay };
+
+  } else if (filter === 'week') {
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date(today);
+    const dayOfWeek = today.getDay(); // 0 (Sun) to 6 (Sat)
+    const diffToMonday = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek; // Adjust when dayOfWeek is Sunday
+    startOfWeek.setDate(today.getDate() + diffToMonday);
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    // Calculate the end of the week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
     endOfWeek.setHours(23, 59, 59, 999);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 0, 0, 0, 0, 0);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 0, 0, 0, 0);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
