@@ -15,7 +15,7 @@ const getTasks = async (req, res) => {
 
   const now = new Date();
   const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate()-1);
+  // tomorrow.setDate(now.getDate()-1);
 
   if (filter === 'today') {
     const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 0, 0, 0, 0);
@@ -23,7 +23,7 @@ const getTasks = async (req, res) => {
     query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
     const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setDate(now.getDate() - now.getDay()+1);
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(now);
