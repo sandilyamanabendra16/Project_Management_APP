@@ -139,5 +139,6 @@ position: absolute;
 
 .task2{
     height: 88%;
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
