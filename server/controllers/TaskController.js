@@ -18,22 +18,22 @@ const getTasks = async (req, res) => {
   tomorrow.setDate(now.getDate()-1);
 
   if (filter === 'today') {
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-    const endOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 23, 59, 59, 999);
+    const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 0, 0, 0, 0);
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
     query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
     const startOfWeek = new Date(tomorrow);
-    startOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay()+1);
+    startOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay());
     startOfWeek.setHours(0, 0, 0, 0);
 
-    const endOfWeek = new Date(tomorrow);
-    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 7);
+    const endOfWeek = new Date(now);
+    endOfWeek.setDate(now.getDate() - now.getDay() + 7);
     endOfWeek.setHours(23, 59, 59, 999);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
-    const endOfMonth = new Date(tomorrow.getFullYear(), tomorrow.getMonth() + 1, 0, 23, 59, 59, 999);
+    const startOfMonth = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), 1, 0, 0, 0, 0);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
   
