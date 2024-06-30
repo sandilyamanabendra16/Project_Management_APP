@@ -55,10 +55,10 @@ const Dashboard = () => {
       <div>
         <h3>  <FiCodesandbox /> Pro Manage</h3>
       </div>
-          <div onClick={handleboard}> <FiLayout /> <span> Board</span></div>
-          <div onClick={handleanalyt}> <GoDatabase /> <span>Analytics</span>
+          <div style={{ background: taskboard? '#EDF5FE':null}} onClick={handleboard}> <FiLayout /> <span> Board</span></div>
+          <div onClick={handleanalyt} style={{background: analyt? '#EDF5FE':null}}> <GoDatabase /> <span>Analytics</span>
     </div>
-          <div onClick={handlesetting} >
+          <div onClick={handlesetting} style= {{background: settings?'#EDF5FE':null}}>
             <CiSettings /> <span> Settings</span>
           </div>
       </div>
