@@ -12,6 +12,7 @@ body{
 }
 .right{
     width:60%;
+    height: inherit;
     background-color:#17A2B8 ;
     color:white;
 }
