@@ -29,13 +29,13 @@ const getTasks = async (req, res) => {
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(tomorrow);
-    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 6);
+    endOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + 7);
     endOfWeek.setHours(23, 59, 59, 999);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 0, 0, 0, 0);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
 
