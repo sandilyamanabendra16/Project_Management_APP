@@ -32,8 +32,8 @@ const getTasks = async (req, res) => {
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
-    const startOfMonth = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), 1, 0, 0, 0, 0);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    const endOfMonth = new Date(tomorrow.getFullYear(), tomorrow.getMonth() + 1, 0, 23, 59, 59, 999);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
   
