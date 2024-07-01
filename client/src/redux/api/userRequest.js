@@ -1,6 +1,7 @@
 import axios from 'axios'
+import { BACKEND_URL} from './Constant';
 
-const API= axios.create({ baseURL:'https://project-management-app-gqr7.onrender.com' });
+const API= axios.create({ baseURL: BACKEND_URL});
 
 API.interceptors.request.use((req) => {
     
