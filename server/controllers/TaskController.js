@@ -29,7 +29,7 @@ const getTasks = async (req, res) => {
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(now);
-    endOfWeek.setDate(now.getDate()+ 7);
+    endOfWeek.setDate(now.getDate()+ 6);
     endOfWeek.setHours(23, 59, 59, 999);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
