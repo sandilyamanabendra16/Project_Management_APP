@@ -17,7 +17,7 @@ function TaskList() {
   const { tasks = [], loading, error } = taskState; // Ensure tasks is always an array
   const [adduseremail, setAdduseremail] = useState(false);
   const [addtasks, setAddtasks] = useState(false);
-  const [filter, setFilter] = useState('month');
+  const [filter, setFilter] = useState('week');
   const [openChecklists, setOpenChecklists] = useState({
     backlog: false,
     todo: false,
