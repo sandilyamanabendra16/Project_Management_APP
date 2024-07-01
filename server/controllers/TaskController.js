@@ -26,7 +26,7 @@ const getTasks = async (req, res) => {
   } else if (filter === 'week') {
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate()-1);
-    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setHours(5, 30, 0, 0);
 
     const endOfWeek = new Date(now);
     endOfWeek.setDate(now.getDate()+ 6);
@@ -36,7 +36,7 @@ const getTasks = async (req, res) => {
   } else if (filter === 'month') {
     const startOfMonth= new Date(now);
     startOfMonth.setDate(now.getDate()-1);
-    startOfMonth.setHours(0,0,0,0);
+    startOfMonth.setHours(5,30,0,0);
     const endOfMonth= new Date(now);
     endOfMonth.setDate(now.getDate()+30);
     endOfMonth.setHours(0,0,0,0);
