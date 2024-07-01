@@ -14,40 +14,36 @@ const getTasks = async (req, res) => {
   };
 
   const now = new Date();
-  const gmtOffset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds
+  const tomorrow = new Date(now);
+  const tomorrow1= new Date(now);
+  tomorrow.setDate(now.getDate()-1);
+  tomorrow1.setDate(now.getDate());
 
   if (filter === 'today') {
-    // Get the start of the current day in local time
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-    // Get the end of the current day in local time
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-    // Convert to UTC
-    query.dueDate = { $gte: new Date(startOfDay.getTime() - gmtOffset), $lte: new Date(endOfDay.getTime() - gmtOffset) };
-
+    const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate() ,5, 30, 0, 0);
+    const endOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate() ,23, 59, 59, 999);
+    query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
     const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate())
-    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate()-1);
+    startOfWeek.setHours(5, 30, 0, 0);
+
     const endOfWeek = new Date(now);
-    endOfWeek.setDate(now.getDate() + 7);
-    endOfWeek.setHours(23, 59, 59, 999);
+    endOfWeek.setDate(now.getDate()+ 7);
+    // endOfWeek.setHours(23, 59, 59, 999);
 
-    // Convert to UTC
-    query.dueDate = { $gte: new Date(startOfWeek.getTime() - gmtOffset), $lte: new Date(endOfWeek.getTime() - gmtOffset) };
-
+    query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
-    const startOfMonth = new Date(now);
-    startOfMonth.setDate(now.getDate())
-    startOfMonth.setHours(0, 0, 0, 0);
-    const endOfMonth = new Date(now);
-    endOfMonth.setDate(now.getDate() + 30);
-    endOfMonth.setHours(23, 59, 59, 999);
-
-    // Convert to UTC
-    query.dueDate = { $gte: new Date(startOfMonth.getTime() - gmtOffset), $lte: new Date(endOfMonth.getTime() - gmtOffset) };
+    const startOfMonth= new Date(now);
+    startOfMonth.setDate(now.getDate()-1);
+    startOfMonth.setHours(5,30,0,0);
+    const endOfMonth= new Date(now);
+    endOfMonth.setDate(now.getDate()+30);
+    query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
 
   try {
+    
     const tasks = await Task.find(query).sort({ dueDate: 1 }); // Sort tasks by dueDate in ascending order
     res.status(200).json(tasks);
   } catch (error) {
@@ -55,7 +51,6 @@ const getTasks = async (req, res) => {
     res.status(500).json({ message: 'Error fetching tasks', error });
   }
 };
-
 
 
 
