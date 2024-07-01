@@ -20,7 +20,7 @@ const getTasks = async (req, res) => {
   tomorrow1.setDate(now.getDate());
 
   if (filter === 'today') {
-    const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate() ,0, 0, 0, 0);
+    const startOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate() ,5, 30, 0, 0);
     const endOfDay = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate() ,23, 59, 59, 999);
     query.dueDate = { $gte: startOfDay, $lte: endOfDay };
   } else if (filter === 'week') {
@@ -30,7 +30,7 @@ const getTasks = async (req, res) => {
 
     const endOfWeek = new Date(now);
     endOfWeek.setDate(now.getDate()+ 6);
-    endOfWeek.setHours(23, 59, 59, 999);
+    endOfWeek.setHours(0, 0, 0, 0);
 
     query.dueDate = { $gte: startOfWeek, $lte: endOfWeek };
   } else if (filter === 'month') {
@@ -39,7 +39,7 @@ const getTasks = async (req, res) => {
     startOfMonth.setHours(0,0,0,0);
     const endOfMonth= new Date(now);
     endOfMonth.setDate(now.getDate()+30);
-    endOfMonth.setHours(23,59,59,999);
+    endOfMonth.setHours(0,0,0,0);
     query.dueDate = { $gte: startOfMonth, $lte: endOfMonth };
   }
 
